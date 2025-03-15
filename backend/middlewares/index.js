@@ -1,4 +1,4 @@
-import jsonwebtoken from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import JWT_Secret from '../config.js';
 
 export const verifyToken = (req, res, next) => {
@@ -7,8 +7,10 @@ export const verifyToken = (req, res, next) => {
         res.status(400).send("Token not found");
         return;
     }
-    const data = token.split(" ")[1];
-    const decoded = jsonwebtoken.verify(data, JWT_Secret);
+    const words = token.split(' ');
+    const jwtToken = words[1];
+    const decoded = jwt.verify(jwtToken, JWT_Secret);
+    console.log(decoded);
     req.userId = decoded.userId;
     next();
 }; 

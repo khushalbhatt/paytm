@@ -1,6 +1,6 @@
 import express from 'express';
 import { userModel } from '../root/db.js';
-import jsonwebtoken from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import zod from 'zod';
 import JWT_Secret from '../config.js';
 import { verifyToken } from '../middlewares/index.js';
@@ -35,7 +35,7 @@ router.post('/signup',async (req,res)=>{
         username: body.username
     })
     console.log(dbUser);
-    jsonwebtoken.sign({userId:dbUser._id},JWT_Secret);
+    jwt.sign({userId:dbUser._id},JWT_Secret);
     res.status(201).send("User Created");
 })
 
@@ -47,7 +47,8 @@ router.post('/login',async (req,res)=>{
     const user = await userModel.findOne({username: username});
     if(user){
         if(user.password === password){
-            const token = jsonwebtoken.sign({userId:user._id},JWT_Secret);
+            const token = jwt.sign({userId:user._id},JWT_Secret);
+            console.log(token);
             res.status(200).send("User Authenticated and succesfully loggedin");
         }else{
             res.status(400).send("Invalid Credentials");
@@ -56,5 +57,13 @@ router.post('/login',async (req,res)=>{
         res.status(400).send("Invalid Credentials");
     }
 })
+
+
+router.put('/update',verifyToken,async (req,res)=>{
+    const body = req.body;
+    console.log(req.userId);  
+    await userModel.updateOne({_id:req.userId},body);
+    res.status(200).send("User Updated");
+});
 
 export default router;

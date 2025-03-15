@@ -1,4 +1,4 @@
 
-const JWT_Secret = 'your_secret_key';
+const JWT_Secret = 'jwtsecretkey';
 
 export default JWT_Secret;
