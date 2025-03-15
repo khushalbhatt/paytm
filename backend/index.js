@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { userModel } from './root/db.js';
+
 import router from './routes/index.js';
 const app = express();
 
@@ -13,7 +14,7 @@ app.use('/api/v1',router);
 
 app.get("/", (req,res) => {
     res.send("Hello World");
-});
+}); 
 
 
 app.listen(3001, () => {

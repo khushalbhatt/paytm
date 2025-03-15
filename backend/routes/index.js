@@ -21,4 +21,21 @@ router.post('/signup',async (req,res)=>{
     res.status(201).send("User Created");
 })
 
+router.post('/login',async (req,res)=>{
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
+    const password = req.body.password;
+    
+    const abc = await userModel.findOne({firstname: firstname, lastname: lastname});
+    if(abc){
+        if(abc.password === password){
+            res.status(200).send("User Authenticated and succesfully loggedin");
+        }else{
+            res.status(400).send("Invalid Credentials");
+        }
+    }else{
+        res.status(400).send("Invalid Credentials");
+    }
+})
+
 export default router;
