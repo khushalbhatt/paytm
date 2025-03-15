@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
-mongoose.connect('mongodb+srv://Khushalbhatt:Khushal%40123@cluster0.ytwue.mongodb.net/paytm');
+mongoose.connect('mongodb+srv://Khushalbhatt:Khushal%40123@cluster0.ytwue.mongodb.net/paytm',{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000 // Increase timeout to 30 seconds
+});
 
 const userSchema = new mongoose.Schema({
     firstname: String,
@@ -9,6 +13,12 @@ const userSchema = new mongoose.Schema({
     username: String
 })
 
-const userModel = mongoose.model('users', userSchema);
+const accountSchema = new mongoose.Schema({
+    id: String,
+    balance: Number
+})
 
-export { userModel };
+const userModel = mongoose.model('users', userSchema);
+const accountModel = mongoose.model('accounts', accountSchema);
+
+export { userModel,accountModel };

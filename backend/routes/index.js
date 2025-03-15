@@ -1,5 +1,5 @@
 import express from 'express';
-import { userModel } from '../root/db.js';
+import { userModel,accountModel } from '../root/db.js';
 import jwt from 'jsonwebtoken';
 import zod from 'zod';
 import JWT_Secret from '../config.js';
@@ -35,6 +35,10 @@ router.post('/signup',async (req,res)=>{
         username: body.username
     })
     console.log(dbUser);
+    const accountModel = await accountModel.create({
+        id: dbUser.id,
+        balance: Math.floor(Math.random()*10000)
+    })
     jwt.sign({userId:dbUser._id},JWT_Secret);
     res.status(201).send("User Created");
 })
