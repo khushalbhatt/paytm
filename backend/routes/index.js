@@ -66,4 +66,19 @@ router.put('/update',verifyToken,async (req,res)=>{
     res.status(200).send("User Updated");
 });
 
+router.get('/user',async (req,res)=>{
+    filter = req.query.filter || '';
+    const users = await userModel.find({
+        $or: [{
+                firstname:{
+                    $regex: filter
+                },
+                lastname:{
+                    $regex: filter
+                }
+            }]
+    });
+    res.status(200).send(users);
+})
+
 export default router;
